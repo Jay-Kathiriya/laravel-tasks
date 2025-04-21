@@ -1,32 +1,27 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Console;
 
-return new class extends Migration
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
+class Kernel extends ConsoleKernel
 {
     /**
-     * Run the migrations.
+     * Define the application's command schedule.
      */
-    public function up(): void
+    protected function schedule(Schedule $schedule): void
     {
-        // Check if the table already exists before creating it
-        if (!Schema::hasTable('password_reset_tokens')) {
-            Schema::create('password_reset_tokens', function (Blueprint $table) {
-                $table->string('email')->primary();  // Setting 'email' as the primary key
-                $table->string('token');
-                $table->timestamp('created_at')->nullable();
-            });
-        }
+        // $schedule->command('inspire')->hourly();
     }
 
     /**
-     * Reverse the migrations.
+     * Register the commands for the application.
      */
-    public function down(): void
+    protected function commands(): void
     {
-        // Drop the table if it exists
-        Schema::dropIfExists('password_reset_tokens');
+        $this->load(__DIR__.'/Commands');
+
+        require base_path('routes/console.php');
     }
-};
+}
